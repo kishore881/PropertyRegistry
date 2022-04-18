@@ -1,5 +1,6 @@
 {
   "name": "lr_ui",
+  "homepage": "https://kancherlakishorereddy.github.io/PropertyRegistry",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
