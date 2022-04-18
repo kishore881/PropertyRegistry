@@ -1,4 +1,4 @@
-import { Form, Button, Spinner, Modal, Container, ListGroup, Accordion, Table } from "react-bootstrap";
+import { Form, Button, Spinner, Alert, Container, ListGroup, Accordion, Table } from "react-bootstrap";
 import { useState } from "react";
 
 function Home ({web3, registry}) {
@@ -85,11 +85,15 @@ function Home ({web3, registry}) {
                         <Button variant="primary" type="submit"> Search </Button> :
                         <Spinner animation="border" />
                 }
-                <Modal show={error !== null} onHide={() => setError(null)} style={{overflowX: "wrap"}}>
-                    <Modal.Header closeButton> <Modal.Title>Error</Modal.Title> </Modal.Header>
-                    <Modal.Body> <p> {error} </p> </Modal.Body>
-                </Modal>
             </Form>
+            {error !== null &&
+                <Alert variant="danger" onClose={() => setError(null)} dismissible>
+                    <Alert.Heading>Error occurred!</Alert.Heading>
+                    <p>{error}</p>
+                </Alert>
+            }
+            {
+            (error === null && ipfsProperty !== null && owner !== null && history !== null) &&
             <ListGroup variant="flush">
                 <ListGroup.Item>IPFS Document Hash: <span className="h6"><a href={`https://ipfs.io/ipfs/${ipfsProperty}`} target='_blank' rel="noreferrer">{ipfsProperty}</a></span></ListGroup.Item>
                 <ListGroup.Item>Owned By: <span className="h6">{owner}</span></ListGroup.Item>
@@ -130,6 +134,7 @@ function Home ({web3, registry}) {
                 </Accordion.Item>
                 </Accordion>
             </ListGroup>
+            }
         </Container>
     )
 }

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Container, Form, Button, Spinner, Modal } from "react-bootstrap";
+import { Container, Form, Button, Spinner, Alert } from "react-bootstrap";
 import IpfsForm from '../components/IPFS';
 
 function Registrar({web3, registry, account}) {
 
     const [error, setError] = useState(null);
     const [registering, setRegistering] = useState(false);
+    const [transactionState, setTransactionState] = useState('');
     const [status, setStatus] = useState(null);
     const [hash, setHash] = useState('');
 
@@ -21,11 +22,12 @@ function Registrar({web3, registry, account}) {
         
         registry.methods.register(user_adr, ipfs_id).send({from: account})
         .on('transactionHash', (hash) => {
+            setTransactionState('Pending');
             setStatus(`Transaction Pending.\n Tx hash: ${hash}`)
         })
         .on('receipt', (receipt) => {
-            console.log(receipt)
-            setStatus(`Registered successfully.\n Tx hash: ${receipt.transactionHash} \n Token Id: ${receipt.events.Transfer.returnValues['tokenId']}`)
+            setTransactionState('Success');
+            setStatus(`Registered successfully.\n Token Id: ${receipt.events.Transfer.returnValues['tokenId']}\n Tx hash: ${receipt.transactionHash} \n`)
             setRegistering(false);
             callback();
         })
@@ -64,27 +66,21 @@ function Registrar({web3, registry, account}) {
 
     return (
         <Container className="my-3" style={{maxWidth:'720px'}}>
-            <Modal show={error !== null} onHide={() => setError(null)} style={{color: 'var(--danger)', overflowX: "wrap"}}>
-                <Modal.Header closeButton> <Modal.Title>Error</Modal.Title> </Modal.Header>
-                <Modal.Body> <p> {error} </p> </Modal.Body>
-            </Modal>
-            <Modal size="lg" style={{color: 'var(--success)', overflowX: 'wrap'}} show={status !== null} onHide={() => setStatus(null)}>
-                <Modal.Header closeButton> <Modal.Title>Success</Modal.Title> </Modal.Header>
-                <Modal.Body> <p> {status} </p> </Modal.Body>
-            </Modal>
+            <IpfsForm setHash={setHash}/>
+            <hr/>
             <Form className="py-3 my-3" onSubmit={registerProperty}>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="register-ipfs-input">Property IPFS Hash</Form.Label>
                     <Form.Control type="text-input" id="register-ipfs-input" aria-describedby="property-ipfs" value={hash} disabled />
                     <Form.Text id="property-ipfs" muted>
-                        This hash is taken from the form at the end of the page.
+                        This hash is taken from the form above automatically.
                     </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="register-user-input">User Adress</Form.Label>
                     <Form.Control type="text-input" id="register-user-input" aria-describedby="userId"/>
                     <Form.Text id="userId" muted>
-                        Enter Eth Address of the owner of the Property
+                        Enter Ethereum Address of the new owner of the Property
                     </Form.Text>
                 </Form.Group>
                 {
@@ -93,8 +89,19 @@ function Registrar({web3, registry, account}) {
                         <Spinner animation="border" />
                 }
             </Form>
-            <hr/>
-            <IpfsForm setHash={setHash}/>
+            {
+                error !== null ? 
+                    <Alert variant="danger" onClose={() => setError(null)} dismissible>
+                        <Alert.Heading>Error occurred!</Alert.Heading>
+                        <p>{error}</p>
+                    </Alert> : (
+                status !== null ? 
+                    <Alert variant={transactionState==='Pending' ? 'info' : 'success'} onClose={() => setStatus(null)} dismissible>
+                        <Alert.Heading>{transactionState}</Alert.Heading>
+                        <p>{status}</p>
+                    </Alert> : <></>
+                )
+            }
         </Container>
     )
 }
