@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/PropertyRegistry/static/css/main.38806b34.css",
+    "main.js": "/PropertyRegistry/static/js/main.dedebbca.js",
+    "index.html": "/PropertyRegistry/index.html",
+    "main.38806b34.css.map": "/PropertyRegistry/static/css/main.38806b34.css.map",
+    "main.dedebbca.js.map": "/PropertyRegistry/static/js/main.dedebbca.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38806b34.css",
+    "static/js/main.dedebbca.js"
+  ]
+}

@@ -28,7 +28,7 @@ function App() {
   
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="%PUBLIC_URL%">
       <NavBar account={account} setAccount={setAccount} setWeb3={setWeb3}/>
       <Routes>
         <Route path="/" element={<Home web3={web3} registry={registry}/>}/>
