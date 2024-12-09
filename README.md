@@ -13,7 +13,7 @@
 
 ### Front-End
 - Made with ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-- Application is currently accessible at [kancherlakishorereddy.github.io/PropertyRegistry](https://kishore881.github.io/PropertyRegistry)
+- Application is currently accessible at [kishore881.github.io/PropertyRegistry](https://kishore881.github.io/PropertyRegistry)
 
 ### Other Tools
 - [![MetaMask](https://user-images.githubusercontent.com/49707819/166558900-797ed83f-47ea-41e6-9b3d-c8b34c80a9c4.png)](https://metamask.io)
